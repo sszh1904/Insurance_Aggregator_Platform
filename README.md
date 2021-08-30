@@ -31,7 +31,7 @@ This repository contains instructions of setting up and running the application 
 
 ## Prerequisites <a name="prerequisites"></a>
 - [Python](https://www.python.org/downloads/): >= 3.8
-- [Git](https://git-scm.com/downloads)
+- [Git](https://git-scm.com/downloads): >= 2.21
 - [Docker Desktop](https://docs.docker.com/get-docker/)
 - [WAMP](https://www.wampserver.com/en/download-wampserver-64bits/) (Windows)/ [MAMP](https://www.mamp.info/en/downloads/) (Mac)
 - [Paypal](https://developer.paypal.com/docs/api-basics/sandbox/accounts/#create-a-personal-sandbox-account) Account Credentials
