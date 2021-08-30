@@ -203,7 +203,7 @@ Upon successful registration, you will be redirected to the login page. You may 
 ### Agent <a name="agent"></a>
 Agents do not need to register for an account, as dummy agent accounts already exist in the database.
 
-Dummy Agent Account <br>
+**Dummy Agent Account** <br>
 NRIC: S1234567A <br>
 Password: sam123 <br>
 
