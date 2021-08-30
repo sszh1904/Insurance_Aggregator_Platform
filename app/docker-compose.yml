@@ -1,0 +1,337 @@
+version: "3.8"
+
+volumes:
+  rabbitmq_data:
+  pgdata: 
+  kongadata:
+
+networks:
+  kong-net:
+    driver: bridge
+
+services:
+  #######################################
+  # Postgres: The database used by Kong
+  #######################################
+  kong-database:
+    image: postgres:9.6
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      POSTGRES_DB: kong
+      POSTGRES_USER: kong
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kong"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  #######################################
+  # Kong database migration
+  #######################################
+  kong-migration:
+    image: kong:2.0.4
+    command: "kong migrations bootstrap"
+    restart: on-failure
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+    depends_on:
+      - kong-database
+
+  #######################################
+  # Kong: The API Gateway
+  #######################################
+  kong:
+    image: kong:2.0.4
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+      KONG_PROXY_LISTEN: 0.0.0.0:8000
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+    depends_on:
+      - kong-migration
+    ports:
+      - "8000:8000"
+  
+  #######################################
+  # Konga: Kong GUI
+  #######################################
+  konga:
+    image: pantsel/konga
+    restart: always
+    networks:
+        - kong-net
+    environment:
+      DB_ADAPTER: postgres
+      DB_HOST: kong-database
+      DB_USER: kong
+      DB_PASSWORD: password
+      DB_DATABASE: konga_db
+    depends_on:
+      - kong
+    ports:
+      - "1337:1337"
+    volumes:
+      - kongadata:/app/kongadata
+
+  ###################################
+  # Policy microservice
+  ###################################
+  policy:
+    build:
+      context: ./
+      dockerfile: policy.Dockerfile
+    image: davelow/policy:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on:
+      - aviva
+      - great_eastern
+      - aia
+    environment:
+      aviva_url: http://aviva:2001/aviva/
+      great_eastern_url: http://great_eastern:2002/great_eastern/
+      aia_url: http://aia:2003/aia/
+      PYTHONUNBUFFERED: 1
+ 
+  #######################################################
+  # Aviva microservice (external API)
+  #######################################################
+  aviva:
+    build:
+      context: ./
+      dockerfile: aviva.Dockerfile
+    image: davelow/aviva:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  #######################################################
+  # Great Eastern microservice (external API)
+  #######################################################
+  great_eastern:
+    build:
+      context: ./
+      dockerfile: great_eastern.Dockerfile
+    image: davelow/great_eastern:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  #######################################################
+  # AIA microservice (external API)
+  #######################################################
+  aia:
+    build:
+      context: ./
+      dockerfile: aia.Dockerfile
+    image: davelow/aia:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Recommendation microservice
+  ###################################
+  recommendation:
+    build:
+      context: ./
+      dockerfile: recommendation.Dockerfile
+    image: leo/recommendation:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on:
+      - policy
+      - customer
+    environment:
+      customer_url: http://customer:5002/customer_details
+      policy_url: http://policy:5000/getPoliciesByCategory
+      PYTHONUNBUFFERED: 1
+  
+  ###################################
+  # Customer microservice
+  ###################################
+  customer:
+    build:
+      context: ./
+      dockerfile: customer.Dockerfile
+    image: ian/customer:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      customerDB: mysql+mysqlconnector://is213@host.docker.internal:3306/customer
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Checkout microservice
+  ###################################
+  checkout:
+    build:
+      context: ./
+      dockerfile: checkout.Dockerfile
+    image: sam/checkout:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on:
+      - customer
+      - policy
+    environment:
+      checkout_policy_url: http://policy:5000/getPolicyById
+      checkout_customer_url: http://customer:5002/customer_details
+      PYTHONUNBUFFERED: 1
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    networks:
+      - kong-net
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  ###################################
+  # Payment microservice
+  ###################################
+  payment:
+    build:
+      context: ./
+      dockerfile: payment.Dockerfile
+    image: craig/payment:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on:
+      - rabbitmq
+      - checkout
+      - notification
+      - policy
+      - customer
+      - transaction
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      policy_creation_url: http://policy:5000/createpolicy/
+      transaction_url: http://transaction:5008/add_transaction
+      customer_policy_url: http://customer:5002/add_cust_policy
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Notification microservice
+  ###################################
+  notification:
+    build:
+      context: ./
+      dockerfile: notification.Dockerfile
+    image: sam/notification:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      SENDGRID_API_KEY: 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
+      PYTHONUNBUFFERED: 1
+  
+  ###################################
+  # Transaction microservice
+  ###################################
+  transaction:
+    build:
+      context: ./
+      dockerfile: transaction.Dockerfile
+    image: dave/transaction:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      transactionDB: mysql+mysqlconnector://is213@host.docker.internal:3306/transaction
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Agent microservice
+  ###################################
+  agent:
+    build:
+      context: ./ 
+      dockerfile: agent.Dockerfile
+    image: leo/agent:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      agentDB: mysql+mysqlconnector://is213@host.docker.internal:3306/agent
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # view_agent_custs microservice
+  ###################################
+  view_agent_custs:
+    build:
+      context: ./ 
+      dockerfile: view_agent_custs.Dockerfile
+    image: leo/view_agent_custs:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on: 
+      - customer
+      - agent 
+    environment:
+      customer_policy_viewer_url : http://customer:5002/agent_custs_details
+      agent_customer_url : http://agent:5200/getAgentCustomer
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Account microservice
+  ###################################
+  account:
+    build:
+      context: ./ 
+      dockerfile: account.Dockerfile
+    image: ian/account:esdg9t2
+    restart: always
+    networks:
+      - kong-net
+    depends_on: 
+      - customer
+      - agent 
+    environment:
+      cust_db_check_url: http://customer:5002/customer_details
+      agent_getall_url: http://agent:5200/agents
+      agent_cust_url: http://agent:5200/add_agent_customer
+      add_cust_url: http://customer:5002/customer
+      PYTHONUNBUFFERED: 1

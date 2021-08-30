@@ -1,0 +1,4 @@
+Flask-Cors==3.0.10
+Flask==1.1.2
+pika==1.2.0
+sendgrid==6.6.0

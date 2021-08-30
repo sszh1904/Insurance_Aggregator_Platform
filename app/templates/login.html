@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Login</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/icon.png" rel="icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Font Awesome - for heart and cart icon -->
+    <script src="https://kit.fontawesome.com/996cf4158f.js" crossorigin="anonymous"></script>
+
+    <!-- =======================================================
+  * Template Name: Ninestars - v2.3.1
+  * Template URL: https://bootstrapmade.com/ninestars-free-bootstrap-3-theme-for-creative/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+    <style>
+        .contact .php-email-form input[type=checkbox] {
+            height: 12px;
+        }
+    </style>
+</head>
+
+<script src="script.js"></script>
+
+<body onload='check_registration()'>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex">
+
+            <div class="logo mr-auto">
+                <h1 class="text-light"><a href="index.html"><span>Insurance Aggregator</span></a></h1>
+            </div>
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li class="get-started"><a href="registration.html">Register</a></li>
+                </ul>
+            </nav>
+            <!-- .nav-menu -->
+
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <main id="main">
+
+        <!-- ======= Breadcrumbs Section ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Login</h2>
+                    <ol>
+                        <li><a href="index.html">Home</a></li>
+                        <li>Login</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!-- End Breadcrumbs Section -->
+
+        <section class="contact">
+            <div class="container">
+                <form method="post" role="form" class="php-email-form" name='login_form' id='login-form'>
+                    <div class="form-group">
+                        <label for="nric">NRIC</label>
+                        <input type="text" class="form-control" id="nric" name="nric" placeholder="Enter NRIC">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input id="password" type="password" name="password" class="form-control"
+                            placeholder="Enter Password">
+                    </div>
+                    <div style="text-align: center;">
+                        <input type="checkbox" id="agent" name="agent" value="agent">
+                        <label for="agent"> I am an agent</label><br>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" onclick="login()">Login</button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        New user? <a href="registration.html">Register here</a>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+    </main>
+    <!-- End #main -->
+    
+    <!-- ======= Footer ======= -->
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/venobox/venobox.min.js"></script>
+    <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
