@@ -263,7 +263,7 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
-      SENDGRID_API_KEY: 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
+      SENDGRID_API_KEY: <sendgrid_api_key>
       PYTHONUNBUFFERED: 1
   
   ###################################

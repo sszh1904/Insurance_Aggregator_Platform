@@ -15,8 +15,8 @@ async function register(){
     var cpw = document.getElementById("confirmPassword").value;
 
     if(pw!==cpw){
-      alert("Passwords don't match. Please try again.")
-      return
+        alert("Passwords don't match. Please try again.")
+        return
     }
 
     var email = document.getElementById("email").value;
@@ -597,9 +597,7 @@ async function viewCustomers() {
                 `;
                 count++;
             }
-
             area.innerHTML = area.innerHTML + display;
-      
         }else if(result.code===404){
             console.log(result.message)
             document.getElementById('tablecust').innerHTML = "<h2>No customers assigned to you yet!</h2>";

@@ -17,8 +17,8 @@ CORS(app)
 
 paypalrestsdk.configure({
     "mode":"sandbox",
-    "client_id" : "ASsSxe9WhHRTKg1gqsLp7mY0uzWB8ufuxWyMqtJo5z6hNWIKc4Ykza9yJVSeedk4HAX-Y7-bybXyVHT8",
-    "client_secret" : "ECSiMVT913nczr-X7HDLrezZQYwQbOlh4w0ByRsm_ebVUf6C-Dj4uPmFLDBMoWPbEXiCNZWgn9kSV4hV"
+    "client_id" : "<paypal_client_id>",
+    "client_secret" : "<paypal_client_secret_key>"
 })
 
 policy_creation_url = os.environ.get('policy_creation_url') or "http://localhost:5000/createpolicy"

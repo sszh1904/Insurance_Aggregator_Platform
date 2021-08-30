@@ -72,7 +72,7 @@ def sendEmail(message):
             policy_summary += f'Rate Of Return Per Annum: {rate}% <br> Initial Deposit: ${initial_dep}'
             
         email = Mail(
-            from_email = 'esdg9t2@gmail.com',
+            from_email = '<email>',
             to_emails = customer_email,
             subject = f"Policy No: {policy_creation_id} - {policy_name}",
             html_content = f'Dear <strong>{customer_name}</strong>, <p>Your Insurance Policy has been successfully created!</p> <p><strong><u>Transaction Summary</u></strong> <br> Transaction ID: {payment_id} <br> Datetime: {create_time} <br> Payment (for 1st month): ${price} </p> <p><strong><u>Policy Summary</u></strong><br>' + policy_summary + '</p><p>Thank you for choosing Insurance Aggregator, HUAT AH!</p><p>ESDG9T2</p>')
