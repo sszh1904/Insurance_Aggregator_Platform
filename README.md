@@ -203,9 +203,9 @@ Upon successful registration, you will be redirected to the login page. You may 
 ### Agent <a name="agent"></a>
 Agents do not need to register for an account, as dummy agent accounts already exist in the database.
 
-**Dummy Agent Account** <br>
-NRIC: S1234567A <br>
-Password: sam123 <br>
+*Dummy Agent Account* <br>
+*NRIC: S1234567A* <br>
+*Password: sam123* <br>
 
 Use the above account credentials and check the "I am an agent" checkbox to log in as an agent. Have fun exploring the features as an agent!
 
