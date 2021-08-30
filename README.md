@@ -18,12 +18,16 @@
     2. [Microservices](#microservices)
     3. [API Gateway](#api_gateway)
 
+<br>
+
 ## Introduction <a name="introduction"></a>
 With many insurance companies offering a multitude of policies, customers may find it difficult to find a policy that best suits their needs. As such, an insurance policy aggregator platform comes in handy! It aggregate policies from various insurance companies and through a simple scoring algorithm, it recommends the top 5 policies that are best suited for the customer.
 
 This repository contains instructions of setting up and running the application on localhost, meant for **Windows** or **Mac** OS. Ensure that you also have all the [prerequisites](#prerequisites) covered before you [get started](#start).
 
 [Back To The Top](#Insurance_Aggregator)
+
+<br>
 
 ## Prerequisites <a name="prerequisites"></a>
 - [Python](https://www.python.org/downloads/): >= 3.8
@@ -34,10 +38,14 @@ This repository contains instructions of setting up and running the application 
 
 [Back To The Top](#Insurance_Aggregator)
 
+<br>
+
 ## Getting Started <a name="start"></a>
 To get things started, you need to:
 1. [Clone this repository](#clone_repository) into your local machine
 2. [Set up database](#database_setup) using phpMyAdmin
+
+<br>
 
 ### Clone Repository <a name="clone_repository"></a>
 Since the UI will be hosted on WAMP/MAMP, clone the repository into your WAMP/MAMP root folder.
@@ -59,12 +67,14 @@ To setup the MySQL database:
 1. Launch your web browser and type "localhost/phpmyadmin"
 2. Login and ensure that the port number phpMyAdmin is running on is 3306
 3. At the homepage of “localhost/phpmyadmin”:
-- Click “Import” at the top
-- Click the “Choose File” button
-- Navigate to the “Insurance Aggregator” folder which was placed in the WAMP/MAMP root folder and select the “agent.sql” file
-- Click “Go”
+    - Click “Import” at the top
+    - Click the “Choose File” button
+    - Navigate to the “Insurance Aggregator” folder which was placed in the WAMP/MAMP root folder and select the “agent.sql” file
+    - Click “Go”
 4. Go back to the homepage of phpMyAdmin (http://localhost/phpmyadmin/index.php)
 5. Repeat steps 3 & 4 to import “customer.sql” and “transaction.sql”
+
+<br>
 
 Upon completion, you should see 3 separate database schemas created, namely “agent”, “customer” and “transaction”. 
 
@@ -78,14 +88,20 @@ Launch Docker Desktop and ensure that none of your existing containers are using
 - 8000
 - 15672
 
+<br>
+
 If they do, please shut down the containers. If not, you're now ready to [run the application](#run_app)!
 
 [Back To The Top](#Insurance_Aggregator)
+
+<br>
 
 ## Running the Application <a name="run_app"></a>
 To get a functioning application, you need to:
 1. [Start Docker Containers](#start_docker)
 2. [Configure Kong API Gateway](#configure_kong)
+
+<br>
 
 ### Start Docker Containers <a name="start_docker"></a>
 Navigate to the app folder in this repository. After which, run the following command to build the Docker containers:
@@ -121,14 +137,14 @@ docker-compose down -v
 To configure Kong API Gateway:
 1. Launch your web browser and type "localhost:1337"
 2. Create the administrator account with the following details:
-- Username: admin
-- Email: <enter your email address>
-- Password: adminadmin
-- Confirm password: adminadmin
+    - Username: admin
+    - Email: <enter your email address>
+    - Password: adminadmin
+    - Confirm password: adminadmin
 3. Login using the username and password above
 4. Set up the Connection to Kong Admin using the following details:
-- Name: default
-- Kong Admin URL: http://kong:8001
+    - Name: default
+    - Kong Admin URL: http://kong:8001
 5. Click on “SNAPSHOTS” at the left menu bar
 6. Click “IMPORT FROM FILE”
 7. Navigate to the “Insurance Aggregator” folder which was placed in the WAMP/MAMP root folder
@@ -137,7 +153,7 @@ To configure Kong API Gateway:
 10. Click on the “RESTORE” green button
 11. Click on the checkbox for “services” and leave the rest unchecked
 12. Click the “IMPORT OBJECTS” button
-- You should see that 9 services are imported and 0 has failed
+    - You should see that 9 services are imported and 0 has failed
 13. Close the modal
 14. Repeat step 10
 15. Click on the checkbox for “routes” and leave the rest unchecked
@@ -145,12 +161,16 @@ To configure Kong API Gateway:
 
 <br>
 
-Now, go to http://localhost/Insurance_Aggregator_Platform/app/templates and you may start [navigating the application](#nav_app)!
+Now, go to "http://localhost/Insurance_Aggregator_Platform/app/templates" on your browser and you may start [navigating the application](#nav_app)!
 
 [Back To The Top](#Insurance_Aggregator)
 
+<br>
+
 ## Navigating the Application <a name="nav_app"></a>
 There are 2 different user types - [customer](#customer) and [agent](#agent). 
+
+<br>
 
 ### Customer <a name="customer"></a>
 Customers will need to first register an account, then the application would retrieve the customer's details from SingPass Sandbox API and store it in the customer's database. 
@@ -183,9 +203,9 @@ Upon successful registration, you will be redirected to the login page. You may 
 ### Agent <a name="agent"></a>
 Agents do not need to register for an account, as dummy agent accounts already exist in the database.
 
-Dummy Agent Account
-NRIC: S1234567A
-Password: sam123
+Dummy Agent Account <br>
+NRIC: S1234567A <br>
+Password: sam123 <br>
 
 Use the above account credentials and check the "I am an agent" checkbox to log in as an agent. Have fun exploring the features as an agent!
 
