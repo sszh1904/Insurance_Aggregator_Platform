@@ -2,21 +2,22 @@
 
 ## Table of contents
 1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Getting Started](#start)
+2. [Technical Overview](#tech_overview)
+    1. [Interface Layer](#interface)
+    2. [Composite Service Layer](#composite)
+    3. [Atomic Service Layer](#atomic)
+    3. [Database Layer](#database)
+3. [Prerequisites](#prerequisites)
+4. [Getting Started](#start)
     1. [Clone Repository](#clone_repository)
     2. [Database Setup](#database_setup)
     3. [Environment Check](#env_check)
-4. [Running the Application](#run_app)
+5. [Running the Application](#run_app)
     1. [Start Docker Containers](#start_docker)
     2. [Configure Kong API Gateway](#configure_kong)
-5. [Navigating the Application](#nav_app)
+6. [Navigating the Application](#nav_app)
     1. [Customer](#customer)
     2. [Agent](#agent)
-5. [Technical Overview](#tech_overview)
-    1. [Database Schema](#database_schema)
-    2. [Microservices](#microservices)
-    3. [API Gateway](#api_gateway)
 
 <br>
 
@@ -24,6 +25,62 @@
 With many insurance companies offering a multitude of policies, customers may find it difficult to find a policy that best suits their needs. As such, an insurance policy aggregator platform comes in handy! It aggregate policies from various insurance companies and through a simple scoring algorithm, it recommends the top 5 policies that are best suited for the customer.
 
 This repository contains instructions of setting up and running the application on localhost, meant for **Windows** or **Mac** OS. Ensure that you also have all the [prerequisites](#prerequisites) covered before you [get started](#start).
+
+[Back To The Top](#Insurance_Aggregator)
+
+<br>
+
+## Technical Overview <a name="tech_overview"></a>
+The application follows a **microservices architecture** where microservices communicate through **HTTP requests** (synchronous) and **RabbitMQ message queues** (asynchronous). Each microservice is containerised using **Docker**, and **Kong API Gateway** is implemented for routing and access control purposes. The service-oriented architecture comprises of multiple layers - [Interface](#interface), [Composite Service](#composite), [Atomic Service](#atomic) and [Database](#database).
+
+<br>
+
+### Interface Layer <a name="interface"></a>
+- Customer UI
+- Agent UI
+
+Technologies: HTML, CSS, JavaScript
+
+<br>
+
+### Composite Service Layer <a name="composite"></a>
+- Account
+- Checkout
+- Payment
+- Policy
+- Recommendation
+- View_agent_customers
+
+Technologies: Python Flask
+
+<br>
+
+### Atomic Service Layer <a name="atomic"></a>
+- Agent
+- Customer
+- Notification
+- Transaction
+- AIA (pseudo external API)
+- Aviva (pseudo external API)
+- Great_Eastern (pseudo external API)
+
+Technologies: Python Flask, SQL Alchemy
+
+<br>
+
+### Database Layer <a name="database"></a>
+- Agent
+- Customer
+- Transaction
+
+Technologies: MySQL
+
+<br>
+
+### Clone Repository <a name="clone_repository"></a>
+Since the UI will be hosted on WAMP/MAMP, clone the repository into your WAMP/MAMP root folder.
+Windows - "www" folder
+Mac - "htdocs" folder
 
 [Back To The Top](#Insurance_Aggregator)
 
