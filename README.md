@@ -77,15 +77,6 @@ Technologies: MySQL
 
 <br>
 
-### Clone Repository <a name="clone_repository"></a>
-Since the UI will be hosted on WAMP/MAMP, clone the repository into your WAMP/MAMP root folder.
-Windows - "www" folder
-Mac - "htdocs" folder
-
-[Back To The Top](#Insurance_Aggregator)
-
-<br>
-
 ## Prerequisites <a name="prerequisites"></a>
 - [Python](https://www.python.org/downloads/): >= 3.8
 - [Git](https://git-scm.com/downloads): >= 2.21
